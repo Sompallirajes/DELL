@@ -1,0 +1,45 @@
+﻿@model ECommerceApp.Models.Cart
+
+<h2>Your Cart</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Quantity * item.Price)</td>
+                <td>
+                    <form method="post" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Total: @Model.Items.Sum(i => i.Quantity * i.Price)</h3>
+
+<form method="post" asp-action="ClearCart">
+    <button type="submit">Clear Cart</button>
+</form>
+
+<!-- Payment button -->
+@if (Model.Items.Any())
+{
+    <form method="get" asp-action="Payment">
+        <button type="submit">Proceed to Payment</button>
+    </form>
+}
